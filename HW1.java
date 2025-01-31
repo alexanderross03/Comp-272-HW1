@@ -1,90 +1,77 @@
-
 /*
- * *** PLACE YOUR NAME / SECTION  HERE ***
- * Alexander Ross Section 001
-
+ * Author: Alexander Ross
+ * Section: 001
+ * Description: This file contains implementations of a linked list, stack utilities,
+ * and algorithm analysis methods. It includes methods for inserting, removing, and analyzing
+ * elements in these data structures, as well as methods for checking palindromes and analyzing
+ * algorithm complexity.
  */
 
 import java.util.Stack;
 
 public class HW1 {
 
-    /*
-     * Class LinkedList
-     *
-     * This class builds a singly linked list. Each node of the linked-list
-     * contains a single integer values.
-     *
-     * Methods:
-     *  - void   sortInserted(val)     - Inserts value 'val' into the linked-list in
-     *                                   sorted fashion
-     *  - void   removeElementsLT(val) - Removed values in the linked-list that are less
-     *                                   than 'val'
-     *  - void   removeElement(val)    - Removes all values in the linked list of
-     *                                   value 'val'
-     *  - String toString()            - coverts and returns the linked-lists as a string
-     *                                   delimited by brackets []
-     *
+    /**
+     * LinkedList class represents a singly linked list data structure.
+     * It supports operations like sorted insertion, removal of elements,
+     * and removal of elements less than a specified value.
      */
-
     static class LinkedList {
-        static class Node {
-            int data;
-            Node next;
 
-            Node(int d)  {        // Constructor
+        /**
+         * Node class represents a single node in the linked list.
+         * Each node contains an integer value and a reference to the next node.
+         */
+        static class Node {
+            int data;       // Data stored in the node
+            Node next;      // Reference to the next node
+
+            /**
+             * Constructor for Node.
+             * @param d The integer value to store in the node.
+             */
+            Node(int d) {
                 data = d;
                 next = null;
             }
         }
-        Node head;                // head of Linked-list
 
+        Node head; // Head of the linked list
 
-        /*
-         * Method sortedInsert() - this method will insert a new node to the
-         * linked list containing the value specific in teh parameter 'data'.
-         * The newly inserted node will be inserted in sorted order within
-         * the linked-list.
-         *
+        /**
+         * Inserts a new node with the specified data into the linked list in sorted order.
+         * @param data The integer value to insert into the linked list.
          */
-        public void sortedInsert ( int data ) {
+        public void sortedInsert(int data) {
             Node new_node = new Node(data);
-
             new_node.next = null;
 
-            // Special case for head node.
-            if (this.head == null || head.data >= new_node.data ) {
+            // Special case: Insert at the head if the list is empty or the new data is smaller than the head.
+            if (this.head == null || head.data >= new_node.data) {
                 new_node.next = head;
                 head = new_node;
             } else {
-                // locate the node before the point of insertion
+                // Traverse the list to find the correct position for insertion.
                 Node current = this.head;
-
-                // Identify where to place the item to insert
                 while (current.next != null && current.next.data < data) {
                     current = current.next;
                 }
                 new_node.next = current.next;
                 current.next = new_node;
             }
-
-            return;
         }
 
-
-        /*
-         * Method removeElementsLT() - this method removes all nodes that contain a
-         * value that is less than the provided parameter 'ltValue'.
-         *
-         * The method will invoke the method removeElements for each element
-         * found in the linked-list that is less than thr parameter value passed.
+        /**
+         * Removes all nodes from the linked list that contain values less than the specified value.
+         * @param ltValue The threshold value. Nodes with values less than this will be removed.
          */
-        public void removeElementsLT ( int ltValue ) {
-
+        public void removeElementsLT(int ltValue) {
+            // Remove all leading nodes with values less than ltValue.
             while (head != null && head.data < ltValue) {
                 head = head.next;
             }
 
+            // Traverse the list and remove nodes with values less than ltValue.
             Node current = head;
             while (current != null && current.next != null) {
                 if (current.next.data < ltValue) {
@@ -95,18 +82,17 @@ public class HW1 {
             }
         }
 
-
-        /*
-         * Method removeElement() - this method removes all nodes that contain a
-         * value equal to the value the provided parameter 'value'.
+        /**
+         * Removes all nodes from the linked list that contain the specified value.
+         * @param value The value to remove from the linked list.
          */
-
-        public void removeElement ( int value ) {
-
+        public void removeElement(int value) {
+            // Remove all leading nodes with the specified value.
             while (head != null && head.data == value) {
                 head = head.next;
             }
 
+            // Traverse the list and remove nodes with the specified value.
             Node current = head;
             while (current != null && current.next != null) {
                 if (current.next.data == value) {
@@ -117,13 +103,11 @@ public class HW1 {
             }
         }
 
-
-        /*
-         * Method toString() - this is a helper method for printing / constructing
-         * a string object from the linked-list.
+        /**
+         * Returns a string representation of the linked list.
+         * @return A string containing the elements of the linked list in order.
          */
-        public String toString () // Method to output the LinkedList as a String
-        {
+        public String toString() {
             StringBuilder output = new StringBuilder("[");
             Node currNode = this.head;
             while (currNode != null) {
@@ -132,50 +116,32 @@ public class HW1 {
             }
             return output.toString().trim() + "]";
         }
+    } // End of LinkedList class
 
-
-    } // End class LinkedList
-
-
-
-
-    /*
-     * Class Stacks
-     *
-     * This class utilizes the Java Common Framework Library Stack class.
-     *
-     * The intent of this class is to write methods which utilize the Java
-     * library's Stack class. You need to utilize this library class in
-     * your solution.
-     *
-     * Methods:
-     *  - boolean isPalindrome(string)   - method returns true or false if 'string'
-     *                                     is a palindrome
-     *  - int     findlargestK(stack, k) - method accepts a stack and returns the
-     *                                     the largest index in the stack containing
-     *                                     value 'k' (stack index starts at 0)
-     *
+    /**
+     * Stacks class provides utility methods for working with stacks,
+     * including checking if a string is a palindrome and finding the largest index
+     * of a specific value in a stack.
      */
-
     static class Stacks {
 
-        /*
-         * Method isPalindrome() - This method will return the boolean value 'true'
-         * or 'false' on if the passed in parameter string is a palindrome or not.
-         *
-         * The routine should be case insensitive! Meaning 'RaCe cAr' is a palindrome.
-         * Moreover, spaces are ignore, so both 'race car' and 'racecar' are plaindromes.
-         *
-         * The method should utilize the provided Stack class.
+        /**
+         * Checks if the input string is a palindrome.
+         * A palindrome is a string that reads the same backward as forward.
+         * This method is case-insensitive and ignores spaces.
+         * @param input The string to check.
+         * @return True if the string is a palindrome, false otherwise.
          */
         public static boolean isPalindrome(String input) {
             Stack<Character> stack = new Stack<>();
-            input = input.toLowerCase().replaceAll("\\s+", "");
+            input = input.toLowerCase().replaceAll("\\s+", ""); // Normalize the input string
 
+            // Push each character of the string onto the stack
             for (char c : input.toCharArray()) {
                 stack.push(c);
             }
 
+            // Compare each character of the string with the characters popped from the stack
             for (char c : input.toCharArray()) {
                 if (c != stack.pop()) {
                     return false;
@@ -184,22 +150,13 @@ public class HW1 {
             return true;
         }
 
-
-
-        /*
-         * Method findLargestk() - This method will return the largest index
-         * position in the stack for the value specified by the parameter 'k'.
-         *
-         * Note that the bottom of the stack is index location 0. So it you push
-         * on to the stack the values 3 4 9 4 4 7 4, in that order. And you pass the
-         * value '4' for the parameter k, then the largest index position is index
-         * location 6.
-         *
-         * The method should utilize the provided Stack class. This method should NOT
-         * destroy the passed in stack, meaning when the method returns, the passed in
-         * stack should be identical to when this method is passed. One trick as you
-         * pop elements off the passed in stack, place them in a temp stack. Then when
-         * completed, place them all back in teh original stack.
+        /**
+         * Finds the largest index of the specified value `k` in the stack.
+         * The stack is traversed from bottom to top, and the largest index
+         * where `k` appears is returned.
+         * @param stack The stack to search.
+         * @param k The value to find in the stack.
+         * @return The largest index of `k` in the stack, or -1 if `k` is not found.
          */
         public static int findLargestK(Stack<Integer> stack, int k) {
             int largestIndex = -1;
@@ -210,11 +167,11 @@ public class HW1 {
             // Convert stack to array for correct indexing
             Integer[] arr = stack.toArray(new Integer[0]);
 
+            // Traverse the array to find the largest index of `k`
             for (int i = 0; i < arr.length; i++) {
                 System.out.println("Checking value: " + arr[i] + " at index " + i);
                 if (arr[i] == k) {
                     largestIndex = i;
-                    //Added print statements for debug and to ensure correct output values
                     System.out.println("✅ Found k (" + k + ") at index " + i + ", updating largestIndex.");
                 }
             }
@@ -222,44 +179,45 @@ public class HW1 {
             System.out.println("Returning largestIndex: " + largestIndex);
             return largestIndex;
         }
+    } // End of Stacks class
 
-
-
-    }  // End class Stacks
-
-
-
-    /*******************************
-     *
-     * Algorithm Analysis
-     *
-     * Below are two methods, algorithmAnalysis1 and algorithmAnalysis2.
-     * Modify the return statement to return the correct option number.
-     *
-     *********************************/
-
+    /**
+     * Performs algorithm analysis for a method with two independent loops.
+     * The time complexity is O(n + m), and the space complexity is O(1).
+     * @param n The size of the first loop.
+     * @param m The size of the second loop.
+     * @return A constant value (3) representing the result of the analysis.
+     */
     public static int algorithmAnalysis1(int n, int m) {
         int a = 0, b = 0;
 
+        // First loop: O(n) time complexity
         for (int i = 0; i < n; i++)
             a += Math.random();
 
+        // Second loop: O(m) time complexity
         for (int j = 0; j < m; j++)
             b += Math.random();
 
         return 3; // O(N + M) time, O(1) space
     }
 
-
-
+    /**
+     * Performs algorithm analysis for a method with nested loops.
+     * The outer loop runs O(n) times, and the inner loop runs O(log n) times.
+     * The overall time complexity is O(n log n).
+     * @param n The size of the input.
+     * @return A constant value (2) representing the result of the analysis.
+     */
     public static int algorithmAnalysis2(int n) {
         int i, j, k = 0;
+
+        // Outer loop: O(n) time complexity
         for (i = n / 2; i <= n; i++)
+            // Inner loop: O(log n) time complexity
             for (j = 2; j <= n; j = j * 2)
                 k += n / 2;
 
         return 2; // O(N log N) time
     }
-
 }
-
