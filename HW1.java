@@ -1,14 +1,8 @@
 
 /*
  * *** PLACE YOUR NAME / SECTION  HERE ***
- *
- * Homework # 1 (Programming Assignment). This Java class defines some basic
- * manipulation operations on Linked-Lists and Stacks.
- *
- * Additionally, there are two algorithm analysis methods where you need
- * to return a specified number as provided in comments of each method indicating
- * the complexity of the code shown. The testing routine will be looking for a
- * specific number returned.
+ * Alexander Ross Section 001
+
  */
 
 import java.util.Stack;
@@ -87,9 +81,18 @@ public class HW1 {
          */
         public void removeElementsLT ( int ltValue ) {
 
-            // YOUR CODE GOES HERE
+            while (head != null && head.data < ltValue) {
+                head = head.next;
+            }
 
-            return;
+            Node current = head;
+            while (current != null && current.next != null) {
+                if (current.next.data < ltValue) {
+                    current.next = current.next.next;
+                } else {
+                    current = current.next;
+                }
+            }
         }
 
 
@@ -100,9 +103,18 @@ public class HW1 {
 
         public void removeElement ( int value ) {
 
-            // YOUR CODE GOES HERE
+            while (head != null && head.data == value) {
+                head = head.next;
+            }
 
-            return;
+            Node current = head;
+            while (current != null && current.next != null) {
+                if (current.next.data == value) {
+                    current.next = current.next.next;
+                } else {
+                    current = current.next;
+                }
+            }
         }
 
 
@@ -112,14 +124,15 @@ public class HW1 {
          */
         public String toString () // Method to output the LinkedList as a String
         {
-            String output = "[";
+            StringBuilder output = new StringBuilder("[");
             Node currNode = this.head;
             while (currNode != null) {
-                output += currNode.data + " ";
+                output.append(currNode.data).append(" ");
                 currNode = currNode.next;
             }
-            return output.trim() + "]";
+            return output.toString().trim() + "]";
         }
+
 
     } // End class LinkedList
 
@@ -156,13 +169,21 @@ public class HW1 {
          * The method should utilize the provided Stack class.
          */
         public static boolean isPalindrome(String input) {
-
             Stack<Character> stack = new Stack<>();
             input = input.toLowerCase().replaceAll("\\s+", "");
 
-            // Your CODE GOES HERE
-            return false;
+            for (char c : input.toCharArray()) {
+                stack.push(c);
+            }
+
+            for (char c : input.toCharArray()) {
+                if (c != stack.pop()) {
+                    return false;
+                }
+            }
+            return true;
         }
+
 
 
         /*
@@ -181,10 +202,28 @@ public class HW1 {
          * completed, place them all back in teh original stack.
          */
         public static int findLargestK(Stack<Integer> stack, int k) {
+            int largestIndex = -1;
 
-            // YOUR CODE GOES HERE
-            return -1;
+            System.out.println("\n--- Running findLargestK for k = " + k + " ---");
+            System.out.println("Initial Stack: " + stack);
+
+            // Convert stack to array for correct indexing
+            Integer[] arr = stack.toArray(new Integer[0]);
+
+            for (int i = 0; i < arr.length; i++) {
+                System.out.println("Checking value: " + arr[i] + " at index " + i);
+                if (arr[i] == k) {
+                    largestIndex = i;
+                    //Added print statements for debug and to ensure correct output values
+                    System.out.println("✅ Found k (" + k + ") at index " + i + ", updating largestIndex.");
+                }
+            }
+
+            System.out.println("Returning largestIndex: " + largestIndex);
+            return largestIndex;
         }
+
+
 
     }  // End class Stacks
 
@@ -202,45 +241,24 @@ public class HW1 {
     public static int algorithmAnalysis1(int n, int m) {
         int a = 0, b = 0;
 
-        for (int i=0; i < n; i++)
-            a+= Math.random();
+        for (int i = 0; i < n; i++)
+            a += Math.random();
 
-        for (int j=0; j < m; j++)
-            b+= Math.random();
+        for (int j = 0; j < m; j++)
+            b += Math.random();
 
-        /*
-         * Select the correct option listed below:
-         *   1. O(N * M) time, O(1) space
-         *   2. O(N + M) time, O(N + M) space
-         *   3. O(N + M) time, O(1) space
-         *   4. O(N * M) time, O(N + M) space
-         *
-         * TODO: return the answer (which option is correct), in the return statement
-        */
-
-        // RETURN THE CORRECT OPTION NUMBER LISTED ABOVE
-        return -1;
+        return 3; // O(N + M) time, O(1) space
     }
+
 
 
     public static int algorithmAnalysis2(int n) {
         int i, j, k = 0;
-        for (i = n/2; i <= n; i++)
-            for ( j = 2; j <= n; j = j*2 )
-                k+= n/2;
+        for (i = n / 2; i <= n; i++)
+            for (j = 2; j <= n; j = j * 2)
+                k += n / 2;
 
-        /*
-         * Select the correct option listed below:
-         *   1. O(N) time
-         *   2. O(N log N) time
-         *   3. O(N^2) time
-         *   4. O(N^2Log n) time
-         *
-         * TODO: return the answer (which option is correct), in the return statement
-         */
-
-        // RETURN THE CORRECT OPTION LISTED ABOVE
-        return -1;
+        return 2; // O(N log N) time
     }
 
 }
